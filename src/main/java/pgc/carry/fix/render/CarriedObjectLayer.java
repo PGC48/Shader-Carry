@@ -32,16 +32,14 @@ public class CarriedObjectLayer extends RenderLayer<AbstractClientPlayer, Player
     public void render(PoseStack poseStack, MultiBufferSource buffer, int packedLight, AbstractClientPlayer player, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
 
         CarryOnData carry = CarryOnDataManager.getCarryData(player);
-        if (!carry.isCarrying()) return; // ถ้าไม่ได้ถืออะไรเลย ให้ข้ามไป
+        if (!carry.isCarrying()) return; 
 
         poseStack.pushPose();
 
-        // ท่าไม้ตายคณิตศาสตร์: พลิกแกนกลับและย้ายจุดเริ่มต้นลงมาที่เท้า เพื่อให้อ้างอิงโลกจริง
         poseStack.mulPose(Axis.ZP.rotationDegrees(180f));
         poseStack.translate(0.0, -1.5, 0.0);
 
         if (carry.isCarrying(CarryOnData.CarryType.ENTITY)) {
-            // === โซนเรนเดอร์ ENTITY ===
             Entity entity = CarryRenderHelper.getRenderEntity(player);
             if (entity != null) {
                 float height = entity.getBbHeight();
@@ -56,7 +54,6 @@ public class CarriedObjectLayer extends RenderLayer<AbstractClientPlayer, Player
                 poseStack.mulPose(Axis.YP.rotationDegrees(180));
                 poseStack.scale(scale, scale, scale);
 
-                // แช่แข็งกันสั่น
                 entity.setPos(0, 0, 0);
                 entity.xOld = 0; entity.yOld = 0; entity.zOld = 0;
                 entity.xo = 0; entity.yo = 0; entity.zo = 0;
@@ -78,7 +75,6 @@ public class CarriedObjectLayer extends RenderLayer<AbstractClientPlayer, Player
             }
         }
         else if (carry.isCarrying(CarryOnData.CarryType.BLOCK)) {
-            // === โซนเรนเดอร์ BLOCK (หีบ, เตาเผา ฯลฯ) ===
             BlockState state = CarryRenderHelper.getRenderState(player);
             ItemStack stack = new ItemStack(state.getBlock().asItem());
             BakedModel model = CarryRenderHelper.getRenderBlock(player);
@@ -86,20 +82,16 @@ public class CarriedObjectLayer extends RenderLayer<AbstractClientPlayer, Player
             float heightOffset = CarryRenderHelper.getRenderHeight(player);
             float customOffset = (heightOffset - 1f) / 1.2f;
 
-            // จัดตำแหน่งบล็อกให้อยู่ตรงอก
             poseStack.translate(0.0, 0.9 - customOffset, -0.6);
 
-            // เช็คว่าต้องหันหน้าบล็อกเข้าหาคนอุ้มหรือไม่ (เช่น หีบ)
             if (Constants.CLIENT_CONFIG.facePlayer != CarryRenderHelper.isChest(state.getBlock())) {
                 poseStack.mulPose(Axis.YP.rotationDegrees(180));
             }
 
-            // ลดขนาดบล็อกให้อยู่ในสเกลการอุ้มปกติ
             poseStack.scale(0.6f, 0.6f, 0.6f);
 
             ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
             try {
-                // เรนเดอร์เป็นไอเทม โดยใช้ Buffer ของ Layer ไม่ทำให้ Shader พังแน่นอน
                 itemRenderer.render(stack, ItemDisplayContext.NONE, false, poseStack, buffer, packedLight, OverlayTexture.NO_OVERLAY, model);
             } catch (Exception ignored) {}
         }
