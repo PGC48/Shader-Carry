@@ -11,7 +11,6 @@ public class DisableOldEntityRenderMixin {
 
     @Redirect(method = "drawThirdPerson", at = @At(value = "INVOKE", target = "Ltschipp/carryon/common/carry/CarryOnData;isCarrying(Ltschipp/carryon/common/carry/CarryOnData$CarryType;)Z"))
     private static boolean bypassOldRendering(CarryOnData instance, CarryOnData.CarryType type) {
-        // ข้ามระบบเก่าทั้งหมด (ทั้ง BLOCK และ ENTITY) เพื่อให้ RenderLayer ของเราจัดการแทน
         return false;
     }
 }
