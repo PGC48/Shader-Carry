@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "pgc.carry.fix.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "client": [
+    "PlayerRendererMixin",
+    "DisableOldEntityRenderMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

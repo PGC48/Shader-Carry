@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "carryfix",
+  "version": "1.0.0",
+  "name": "Shader Carry",
+  "description": "Fixes visual rendering bugs when playing with shaders while carrying entities or blocks.",
+  "authors": [
+    "PGC"
+  ],
+  "contact": {
+    "sources": "https://github.com/PGC/Shader-Carry",
+    "homepage": "https://modrinth.com/mod/shader-carry"
+  },
+  "license": "MIT",
+  "accessWidener": "carryfix.accesswidener",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "pgc.carry.fix.CarryFixClient"
+    ]
+  },
+  "mixins": [
+    "pgc.carry.fix.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.16.10",
+    "minecraft": "~1.20.1",
+    "carryon": "*"
+  }
+}
